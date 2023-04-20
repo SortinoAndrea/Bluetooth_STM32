@@ -22,7 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "string.h"
-
+#include "bluenrg_utils.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -110,10 +110,12 @@ static void MX_USART2_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-//	uint8_t hwVersion;
-//	uint16_t fwVersion;
+	uint8_t hwVersion;
+	uint16_t fwVersion;
 //	uint8_t link_status[8];
 //	uint16_t conn_handle[8];
+
+	uint8_t ret = HAL_OK;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -143,39 +145,45 @@ int main(void)
 	  Error_Handler();
   }
 
-  if(PER_APP_Init_BLE() != APP_SUCCESS)
-  {
-	  Error_Handler();
-  }
-
-//  /* I don't know */
-//  hci_init(NULL, NULL);
-//
-//  /* Send Reset to Bluetooth Chip */
-//  if(HCI_TL_SPI_Reset() !=  HAL_OK)
-//  {
-//	  Error_Handler();
-//  };
-//
-//  if(getBlueNRGVersion(&hwVersion, &fwVersion) != HAL_OK)
+//  if(PER_APP_Init_BLE() != APP_SUCCESS)
 //  {
 //	  Error_Handler();
 //  }
-//
-//
-//  if(HCI_TL_SPI_Reset() !=  HAL_OK)
-//   {
-// 	  Error_Handler();
-//   };
 
+  /* I don't know */
+  hci_init(NULL, NULL);
 
- /* //sprintf(dev_name_char_handle, "Blue");
+  /* Send Reset to Bluetooth Chip */
+  if(HCI_TL_SPI_Reset() !=  HAL_OK)
+  {
+	  Error_Handler();
+  };
 
-  if(aci_gap_init_IDB05A1(1, 0, 0x07, &service_handle, &dev_name_char_handle, &appearance_char_handle) != HAL_OK)
+  if(getBlueNRGVersion(&hwVersion, &fwVersion) != HAL_OK)
   {
 	  Error_Handler();
   }
-*/
+
+
+  if(HCI_TL_SPI_Reset() !=  HAL_OK)
+   {
+ 	  Error_Handler();
+   };
+
+
+  //sprintf(dev_name_char_handle, "Blue");
+  ret = aci_gatt_init();
+  if(ret != HAL_OK)
+  {
+	  Error_Handler();
+  }
+
+
+//  if(aci_gap_init_IDB05A1(1, 0, 0x07, &service_handle, &dev_name_char_handle, &appearance_char_handle) != HAL_OK)
+//  {
+//	  Error_Handler();
+//  }
+
 
   /* USER CODE END 2 */
 
